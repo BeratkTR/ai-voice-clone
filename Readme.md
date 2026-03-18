@@ -1,4 +1,4 @@
-# AI Ses Klonlama - Pro
+# AI Ses Klonlama
 
 ![Uygulama Arayüzü](view.png)
 
@@ -7,7 +7,7 @@ Modern, profesyonel bir arayüze sahip olan, FastAPI ve `chatterbox` modeli taba
 ## Özellikler
 
 - **Gelişmiş Premium Arayüz:** Vanilla CSS ve HTML kullanılarak hiçbir dış kütüphaneye bağımlı kalmadan "MagicUI / Shadcn" gibi premium tasarım kütüphaneleri mimarisinde (karanlık tema, animasyonlu sıvı arkaplan, şeffaf cam efektleri) geliştirilmiştir.
-- **Asenkron Ses Sentezleme & Polling:** Uzun süren AI model inferans/sentez işlemleri doğrudan arka planda (Background Tasks) işlenir. Arayüz her 3 saniyede bir durumu sorgular. Bu mimari sayesinde dışa açılımlarda (`ngrok` veya sunucu tabanlı kullanımlarda) karşılaşılan **timeout (zaman aşımı)** ve "504 Gateway Timeout" çökmeleri tarihe karışır.
+- **Asenkron Ses Sentezleme & Polling:** Uzun süren AI model inferans/sentez işlemleri doğrudan arka planda (Background Tasks) işlenir. Arayüz her 3 saniyede bir durumu sorgular.
 - **İnce Ayar Parametreleri:** 
   - **Sıcaklık (Temperature):** Yüksek oldukça yaratıcılık ve duygusal çeşitlilik artar, düşük oldukça durağanlaşır (Varsayılan Chatterbox değeri: 0.8).
   - **İsteme Bağlılık (CFG Weight):** Verilen metin/ses şablonuna sıkı sıkıya uyma eğilimini etkiler (Varsayılan: 0.5).
@@ -41,3 +41,8 @@ Sunucu başarıyla başladığında (MPS/CPU üzerinde model initialize edilmesi
 ## Proje Yapısı
 - `server.py`: FastAPI backend kodlarını, model entegrasyonlarını, arkaplan görev yürütücü modülünü ve API endpointlerini barındırır.
 - `index.html`: Tamamen özelleştirilmiş, JS asenkron requestleriyle desteklenmiş Web UI dosyasıdır.
+
+## Örnekler
+Modelin okuma başarısını ve tonlamasını incelemek için dizindeki test çıktılarını dinleyebilirsiniz:
+- **Orijinal Ses:** [benim-ses.wav](benim-ses.wav) (Sentezde kullanılan referans kaynak ses)
+- **Klonlanan Ses:** [klon-ses.wav](klon-ses.wav) (Yapay zeka tarafından oluşturulan son çıktı)
