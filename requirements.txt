@@ -1,0 +1,4 @@
+chatterbox_tts==0.1.6
+fastapi==0.135.1
+torch==2.6.0
+torchaudio==2.6.0

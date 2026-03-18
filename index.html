@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ses Klonlama - Pro</title>
+    <!-- Modern typography mimicking shadcn/Vercel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #09090b;
+            --foreground: #fafafa;
+            --muted: #27272a;
+            --muted-foreground: #a1a1aa;
+            --border: #27272a;
+            --input: #18181b;
+            --primary: #fafafa;
+            --primary-foreground: #09090b;
+            --ring: #d4d4d8;
+            --radius: 0.75rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem;
+        }
+
+        /* Ambient glowing orbs (Magic UI style) */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #60a5fa; top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: #c084fc; bottom: -50px; right: -50px; }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, -50px) scale(0.9); }
+        }
+
+        .card {
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+
+        .param-val {
+            font-variant-numeric: tabular-nums;
+            color: #a1a1aa;
+            font-size: 0.75rem;
+            background: var(--muted);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* File Upload mimicking shadcn */
+        .file-upload-wrapper { position: relative; }
+        input[type="file"] { display: none; }
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--input);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .file-upload-label:hover {
+            border-color: #52525b;
+            color: var(--foreground);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Textarea mimicking shadcn */
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem 1rem;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--foreground);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 1px var(--ring);
+        }
+
+        /* Modern Range Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            margin: 1rem 0;
+            outline: none;
+            transition: background 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            transition: transform 0.1s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            margin-top: 0.375rem;
+            line-height: 1.4;
+        }
+
+        /* Magic UI Shimmer Button */
+        button.btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.875rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary-foreground);
+            background: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 14px 0 rgba(255,255,255,0.1);
+        }
+        button.btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        button.btn-primary:active {
+            transform: translateY(0);
+        }
+        button.btn-primary.loading {
+            pointer-events: none;
+            color: transparent;
+        }
+        
+        .shimmer {
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            100% { left: 200%; }
+        }
+
+        /* Loading Spinner inside Button */
+        .spinner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-left-color: var(--primary-foreground);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        button.loading .spinner { display: block; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Error Box */
+        .error-msg {
+            display: none;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius);
+            color: #f87171;
+            font-size: 0.875rem;
+        }
+
+        /* Result Card */
+        #resultCard {
+            display: none;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+        }
+        .result-title svg { color: #10b981; }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            outline: none;
+            background: transparent;
+        }
+        audio::-webkit-media-controls-enclosure {
+            background-color: var(--input);
+            border: 1px solid var(--border);
+        }
+        audio::-webkit-media-controls-panel { color: white; }
+
+        button.btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--foreground);
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        button.btn-secondary:hover {
+            background: var(--muted);
+            border-color: #3f3f46;
+        }
+
+        #downloadLink { text-decoration: none; width: 100%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="card">
+        <div class="header">
+            <h1>Yapay Zeka Ses Klonlama</h1>
+            <p>Hedef sesi ve metni girerek saniyeler içinde yeni bir ses sentezi oluşturun.</p>
+        </div>
+
+        <form id="cloneForm">
+            <div class="form-group">
+                <label>Referans Ses Dosyası</label>
+                <div class="file-upload-wrapper">
+                    <label class="file-upload-label" for="fileInput" id="fileLabel">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span id="fileText">Dosya Seç (MP3 / WAV)</span>
+                    </label>
+                    <input type="file" id="fileInput" name="file" accept="audio/*" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="textInput">Sentezlenecek Metin</label>
+                <textarea id="textInput" name="text" placeholder="Okutmak istediğiniz metni buraya yapıştırın..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="temperatureInput">
+                    Sıcaklık (Temperature) <span class="param-val" id="tempVal">0.8</span>
+                </label>
+                <input type="range" id="temperatureInput" name="temperature" min="0.1" max="1.0" step="0.1" value="0.8">
+                <p class="help-text">Düşük ayar düz vokaller, yüksek ayar yaratıcı deneyler üretir.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="cfgInput">
+                    İsteme Bağlılık (CFG Weight) <span class="param-val" id="cfgVal">0.5</span>
+                </label>
+                <input type="range" id="cfgInput" name="cfg_weight" min="0.1" max="2.0" step="0.1" value="0.5">
+                <p class="help-text">Metnin sınırlarına ne kadar sadık kalınacağını belirler.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="exaggerationInput">
+                    Vurgu (Exaggeration) <span class="param-val" id="exagVal">0.5</span>
+                </label>
+                <input type="range" id="exaggerationInput" name="exaggeration" min="0.0" max="3.0" step="0.1" value="0.5">
+                <p class="help-text">Ne kadar dramatik ve abartılı okunacağını seçin.</p>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">
+                <div class="shimmer"></div>
+                <div class="spinner"></div>
+                <span class="btn-text">Ses Sentezle</span>
+            </button>
+            <div id="errorBox" class="error-msg"></div>
+        </form>
+
+        <div id="resultCard">
+            <div class="result-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                İşlem Başarıyla Tamamlandı
+            </div>
+            <audio id="audioPlayer" controls></audio>
+            <a id="downloadLink" download="cloned_voice.wav">
+                <button type="button" class="btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    WAV Dosyasını İndir
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('cloneForm');
+        const fileInput = document.getElementById('fileInput');
+        const fileText = document.getElementById('fileText');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultCard = document.getElementById('resultCard');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const downloadLink = document.getElementById('downloadLink');
+        const errorBox = document.getElementById('errorBox');
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                fileText.textContent = e.target.files[0].name;
+            } else {
+                fileText.textContent = 'Dosya Seç (MP3 / WAV)';
+            }
+        });
+
+        const updateValAndBg = (id, valId) => {
+            const el = document.getElementById(id);
+            const valEl = document.getElementById(valId);
+            const updateProgress = () => {
+                const min = el.min || 0;
+                const max = el.max || 100;
+                const val = parseFloat(el.value);
+                const percentage = ((val - min) / (max - min)) * 100;
+                el.style.background = `linear-gradient(to right, var(--primary) ${percentage}%, rgba(255, 255, 255, 0.15) ${percentage}%)`;
+                valEl.textContent = val;
+            };
+            el.addEventListener('input', updateProgress);
+            updateProgress(); // initial background set
+        };
+        updateValAndBg('temperatureInput', 'tempVal');
+        updateValAndBg('cfgInput', 'cfgVal');
+        updateValAndBg('exaggerationInput', 'exagVal');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            errorBox.style.display = 'none';
+            resultCard.style.display = 'none';
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/api/clone', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Sunucu ile iletişim kurulamadı.');
+                }
+
+                const data = await response.json();
+                const taskId = data.task_id;
+
+                const checkStatus = async () => {
+                    try {
+                        const res = await fetch(`/api/status/${taskId}`);
+                        if (!res.ok) throw new Error("Durum alınamadı.");
+                        const statusData = await res.json();
+
+                        if (statusData.status === "done") {
+                            const audioUrl = `/api/download/${taskId}`;
+                            audioPlayer.src = audioUrl;
+                            downloadLink.href = audioUrl;
+
+                            resultCard.style.display = 'block';
+                            submitBtn.classList.remove('loading');
+                            submitBtn.disabled = false;
+                        } else if (statusData.status === "error") {
+                            throw new Error(statusData.error || "İşlem sırasında sunucuda hata oluştu.");
+                        } else {
+                            setTimeout(checkStatus, 3000);
+                        }
+                    } catch (err) {
+                        console.error('Polling Error:', err);
+                        errorBox.textContent = 'Hata: ' + err.message;
+                        errorBox.style.display = 'block';
+                        submitBtn.classList.remove('loading');
+                        submitBtn.disabled = false;
+                    }
+                };
+
+                setTimeout(checkStatus, 3000);
+
+            } catch (error) {
+                console.error('Error:', error);
+                errorBox.textContent = 'Hata: ' + error.message;
+                errorBox.style.display = 'block';
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
