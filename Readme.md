@@ -44,5 +44,5 @@ Sunucu başarıyla başladığında (MPS/CPU üzerinde model initialize edilmesi
 
 ## Örnekler
 Modelin okuma başarısını ve tonlamasını incelemek için dizindeki test çıktılarını dinleyebilirsiniz:
-- **Orijinal Ses:** [benim-ses.wav](benim-ses.wav) (Sentezde kullanılan referans kaynak ses)
-- **Klonlanan Ses:** [klon-ses.wav](klon-ses.wav) (Yapay zeka tarafından oluşturulan son çıktı)
+- **Orijinal Ses:** [benim-ses.wav](benim-ses.mp3) (Sentezde kullanılan referans kaynak ses)
+- **Klonlanan Ses:** [klon-ses.wav](klon-ses.mp3) (Yapay zeka tarafından oluşturulan son çıktı)

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ses Klonlama - Örnekler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #09090b;
+            --foreground: #fafafa;
+            --muted: #27272a;
+            --muted-foreground: #a1a1aa;
+            --border: #27272a;
+            --input: #18181b;
+            --primary: #fafafa;
+            --primary-foreground: #09090b;
+            --ring: #d4d4d8;
+            --radius: 0.75rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem;
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #10b981; top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: #3b82f6; bottom: -50px; right: -50px; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, -50px) scale(0.9); }
+        }
+
+        .card {
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .audio-wrapper {
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: border-color 0.2s;
+        }
+
+        .audio-wrapper:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .audio-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--foreground);
+        }
+
+        .audio-title.original svg { color: #3b82f6; }
+        .audio-title.cloned svg { color: #10b981; }
+
+        audio {
+            width: 100%;
+            height: 48px;
+            border-radius: 24px;
+            outline: none;
+            background: transparent;
+        }
+        audio::-webkit-media-controls-enclosure {
+            background-color: var(--muted);
+            border: 1px solid var(--border);
+        }
+        audio::-webkit-media-controls-panel { color: white; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.875rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary-foreground);
+            background: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+        .back-link:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .back-link:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="card">
+        <div class="header">
+            <h1>Ses Vitrini (Showcase)</h1>
+            <p>Yapay zekanın okuma başarısını orijinal ses ile kıyaslayarak inceleyin.</p>
+        </div>
+
+        <div class="audio-wrapper">
+            <div class="audio-title original">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                Orijinal Ses (Referans Kaynak)
+            </div>
+            <audio controls src="./benim-ses.mp3" preload="metadata"></audio>
+        </div>
+
+        <div class="audio-wrapper">
+            <div class="audio-title cloned">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                Klonlanan Ses (Yapay Zeka Çıktısı)
+            </div>
+            <audio controls src="./klon-ses.mp3" preload="metadata"></audio>
+        </div>
+
+        <a href="/" class="back-link">
+            Ses Klonlama Ekranına Dön
+        </a>
+    </div>
+
+</body>
+</html>
