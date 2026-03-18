@@ -15,6 +15,8 @@ Modern, profesyonel bir arayüze sahip olan, FastAPI ve `chatterbox` modeli taba
 
 ## Kurulum
 
+⚠️ **Not:** Python 3.10 kullanılması önerilir.
+
 1. Depoyu klonlayın veya indirin.
 2. Terminalinizi proje dizininde açın.
 3. Python sanal ortamınızı (Virtual Environment) aktif edin:
